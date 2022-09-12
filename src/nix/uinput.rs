@@ -99,7 +99,7 @@ impl UInputMouseManager {
 
         // SAFETY: either casting [u8] to [u8], or [u8] to [i8], which is the same size
         let name_bytes =
-            unsafe { &*("Mouce Lib Fake Mouse".as_ref() as *const [u8] as *const [i8]) };
+            unsafe { &*("Mouce Lib Fake Mouse".as_ref() as *const [u8] as *const [u8]) };
         // Panic if we're doing something really stupid
         // + 1 for the null terminator; usetup.name was zero-initialized so there will be null
         // bytes after the part we copy into
@@ -183,7 +183,8 @@ impl Drop for UInputMouseManager {
         let fd = self.uinput_file.as_raw_fd();
         unsafe {
             // Destroy the device, the file is closed automatically by the File module
-            ioctl(fd, UI_DEV_DESTROY as u64);
+            //ioctl(fd, UI_DEV_DESTROY as u64);
+            ioctl(fd, UI_DEV_DESTROY as u32);
         }
     }
 }
